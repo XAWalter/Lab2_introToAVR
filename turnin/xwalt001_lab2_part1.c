@@ -27,10 +27,10 @@ while(1) {
 		// if PA0 is 1 and PA1 is 0 then PB0 is 1 else PB0 is 0
 		if (tmpA0 == 0x01 && tmpA1 == 0x00) { // True if PA0 is 1
 			tmpB = (tmpB & 0xFE) | 0x01; // Sets tmpB to bbbbbbb1
-							 // (clear rightmost 2 bits, then set to 01)
+							 // (clear rightmost 1 bits, then set to 1)
 		} else {
 			tmpB = (tmpB & 0xFE) | 0x00; // Sets tmpB to bbbbbbb0
-							 // (clear rightmost 2 bits, then set to 10)
+							 // (clear rightmost 1 bits, then set to 0)
 		}	
 	// 3) Write output
 	PORTB = tmpB;	
