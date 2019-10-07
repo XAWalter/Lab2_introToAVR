@@ -16,7 +16,8 @@
 int main(void) {
 	DDRA = 0x00; PORTA = 0xFF; // Configure port A's 8 pins as inputs
 	DDRC = 0xFF; PORTC = 0x00; // Configure port C's 8 pins as outputs, initialize to 0s
-	unsigned char tmpA = 0x00;	
+	unsigned char tmpA = 0x00;
+	unsigned char tmpC = 0x00;	
 	unsigned char cntavail = 0x00;	
 	unsigned char full = 0x00;
 
@@ -24,9 +25,12 @@ int main(void) {
 		// 1) Read input
 		tmpA = PINA & 0x0F;	
 		// 2) Perform computation
-		
+	
+		//set full to false and number of avail spaces to 4	
 		full = 0;	
 		cntavail = 0x04;
+	
+		//count number of ones in binary number	
 		unsigned char i = 0x00;
 		
 		for(i = 0; i < 4; i++){
@@ -36,19 +40,23 @@ int main(void) {
 			
 			tmpA = tmpA >> 1;
 		}
-		
+	
+		//if all spaces have car full = 1	
 		if ( cntavail == 0){
 			full = 1;			
 		}	
 	// 3) Write output
 	
-	if (full){
-		PORTC = ( PORTC | 0x80 );	
-	}	
-	else{
-		PORTC = ( PORTC & 0x7F );
-	}
-	PORTC = ( PORTC & 0xF0) | cntavail ;
+		if (full){
+			tmpC = ( tmpC | 0x80 );	
+		}	
+		else{
+			tmpC = ( tmpC & 0x7F );
+		}
+		tmpC = ( tmpC & 0xF0) | ( cntavail & 0x0F) ;
+
+		PORTC = tmpC;
+	
 	}
 	return 0;
 }
